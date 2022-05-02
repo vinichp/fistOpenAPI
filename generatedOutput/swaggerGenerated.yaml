@@ -1,0 +1,163 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Simple Inventory API",
+    "description" : "This is a simple API",
+    "contact" : {
+      "email" : "you@your-company.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/vinichp/firstOpenAPI/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "tags" : [ {
+    "name" : "tagExemplo",
+    "description" : "Descricao tagExemplo"
+  }, {
+    "name" : "tagExemplo2",
+    "description" : "Descricao tagExemplo2"
+  } ],
+  "paths" : {
+    "/veiculos" : {
+      "get" : {
+        "tags" : [ "tagExemplo" ],
+        "summary" : "Lista veiculos",
+        "description" : "retorna todos os veiculos cadastrados se nenhum filtro for informado\n",
+        "operationId" : "searchInventory",
+        "parameters" : [ {
+          "name" : "Busca por String",
+          "in" : "query",
+          "description" : "opcional - passe uma string para filtrar um veiculo",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "skip",
+          "in" : "query",
+          "description" : "number of records to skip for pagination",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum number of records to return",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 50,
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Veiculo"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "tagExemplo2" ],
+        "summary" : "Adiciona um veiculo",
+        "description" : "Adds an item to the system",
+        "operationId" : "addInventory",
+        "requestBody" : {
+          "description" : "Inventory item to add",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Veiculo"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Veiculo criado"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "Veiculo ja existe"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Veiculo" : {
+        "required" : [ "id", "manufacturer", "name", "releaseDate" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Widget Adapter"
+          },
+          "releaseDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2016-08-29T09:12:33.001Z"
+          },
+          "fabricante" : {
+            "$ref" : "#/components/schemas/Fabricante"
+          }
+        }
+      },
+      "Fabricante" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "ACME Corporation"
+          },
+          "homePage" : {
+            "type" : "string",
+            "format" : "url",
+            "example" : "https://www.acme-corp.com"
+          },
+          "phone" : {
+            "type" : "string",
+            "example" : "408-867-5309"
+          }
+        }
+      }
+    }
+  }
+}
